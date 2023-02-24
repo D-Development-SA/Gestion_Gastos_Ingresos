@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
@@ -48,6 +49,6 @@ public class Persona implements Serializable {
     private Usuario usuario;
 
     @NotNull(message = "El usuario no puede ser nulo")
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    private GastoIngreso gastoIngreso;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<GastoIngreso> gastoIngreso;
 }

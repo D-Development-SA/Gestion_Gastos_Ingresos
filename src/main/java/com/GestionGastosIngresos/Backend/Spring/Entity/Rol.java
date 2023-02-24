@@ -23,4 +23,8 @@ public class Rol implements Serializable {
     @NotNull(message = "No puede ser nulo el rol")
     @Column(nullable = false, unique = true, length = 20)
     private String rol;
+
+    public Rol(String rol) {
+        this.rol = rol;
+    }
 }

@@ -23,15 +23,13 @@ public class GastoIngreso implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Pattern(regexp = "\\d+.\\d+", message = "El valor ingresado en gast es incorrecto")
     @Column
     private double gasto;
 
-    @Pattern(regexp = "\\d+.\\d+", message = "El valor ingresado en gasto es incorrecto")
     @Column
     private double ingreso;
     @NotNull(message = "No puede ser nula la fecha")
-    @Pattern(regexp = "[\\d]{2}/[\\d]{2}/[\\d]{4}", message = "El valor ingresado es incorrecto")
+    @Pattern(regexp = "[\\d]{4}/[\\d]{2}/[\\d]{2}", message = "El valor ingresado es incorrecto")
     @Column(nullable = false, updatable = false)
     private String fecha;
 

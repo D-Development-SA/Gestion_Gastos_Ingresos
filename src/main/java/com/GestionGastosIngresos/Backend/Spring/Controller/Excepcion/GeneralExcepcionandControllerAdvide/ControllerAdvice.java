@@ -4,6 +4,7 @@ import com.GestionGastosIngresos.Backend.Spring.Controller.Errors.Errors;
 import com.GestionGastosIngresos.Backend.Spring.Controller.Excepcion.ArgumentExcepcion.ArgumentNoValidExcepcion;
 import com.GestionGastosIngresos.Backend.Spring.Controller.Excepcion.ArgumentExcepcion.CamposIncorrectosExcepcion;
 import com.GestionGastosIngresos.Backend.Spring.Controller.Excepcion.ArgumentExcepcion.CamposVaciosExcepcion;
+import com.GestionGastosIngresos.Backend.Spring.Controller.Excepcion.ArgumentExcepcion.FechaIncorrectaException;
 import com.GestionGastosIngresos.Backend.Spring.Controller.Excepcion.BDExcepcion.AccessBDExcepcion;
 import com.GestionGastosIngresos.Backend.Spring.Controller.Excepcion.BDExcepcion.NotExistExcepcion;
 import org.springframework.dao.DataAccessException;
@@ -27,7 +28,8 @@ public class ControllerAdvice {
             ListaEmptyExcepcion.class,
             CamposVaciosExcepcion.class,
             NotExistExcepcion.class,
-            ListaEmptyExcepcion.class
+            ListaEmptyExcepcion.class,
+            FechaIncorrectaException.class
     })
     public ResponseEntity<Errors> handlerFieldInc(ICentralExcepcion ex){
         Errors e = getBuild(ex, null);
@@ -80,14 +82,28 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler(value = Exception.class)
-    public ResponseEntity<Errors> handlerReserv(Exception ex){
+    public ResponseEntity<Errors> handlerExcepcion(Exception ex){
         ErrorInesperadoExcepcion excepcion = new ErrorInesperadoExcepcion();
+        String localizedMessage;
+        String message;
+        String causeMessage;
+
+        if(ex.getLocalizedMessage() != null)
+            localizedMessage = ex.getLocalizedMessage();
+        else localizedMessage = "No tiene";
+        if(ex.getMessage() != null)
+            message = ex.getMessage();
+        else message = "No tiene";
+        if(ex.getCause() != null && ex.getCause().getLocalizedMessage() != null)
+            causeMessage = ex.getCause().getMessage();
+        else causeMessage = "No tiene";
+
         hashMap = new HashMap<>();
 
         hashMap.put("Error", "Error inesperado");
-        hashMap.put("Mensaje", ex.getMessage());
-        hashMap.put("Mensaje especificado", ex.getLocalizedMessage());
-        hashMap.put("Causa", ex.getCause().getLocalizedMessage());
+        hashMap.put("Mensaje", message);
+        hashMap.put("Mensaje especificado", localizedMessage);
+        hashMap.put("Causa",causeMessage);
 
         Errors e = getBuild(excepcion, hashMap);
 
@@ -96,16 +112,30 @@ public class ControllerAdvice {
 
     @ExceptionHandler(value = RuntimeException.class)
     public ResponseEntity<HashMap<String, String>> handlerRuntime(RuntimeException ex){
-        System.out.println(ex.getLocalizedMessage());
-        System.out.println(ex.getMessage());
-        System.out.println(ex.getCause().getMessage());
+        String localizedMessage;
+        String message;
+        String causeMessage;
+
+        if(ex.getLocalizedMessage() != null)
+            localizedMessage = ex.getLocalizedMessage();
+        else localizedMessage = "No tiene";
+        if(ex.getMessage() != null)
+            message = ex.getMessage();
+        else message = "No tiene";
+        if(ex.getCause() != null && ex.getCause().getLocalizedMessage() != null)
+            causeMessage = ex.getCause().getMessage();
+        else causeMessage = "No tiene";
+
+        System.out.println(localizedMessage);
+        System.out.println(message);
+        System.out.println(causeMessage);
 
         hashMap = new HashMap<>();
 
-        hashMap.put("Error", "Componente interrumpido");
-        hashMap.put("Mensaje", ex.getMessage());
-        hashMap.put("Mensaje especificado", ex.getLocalizedMessage());
-        hashMap.put("Causa", ex.getCause().getLocalizedMessage());
+        hashMap.put("Error", "Interrupcion recibida");
+        hashMap.put("Mensaje", message);
+        hashMap.put("Mensaje especificado", localizedMessage);
+        hashMap.put("Causa", causeMessage);
 
         return new ResponseEntity<>(hashMap, HttpStatus.CONFLICT);
     }

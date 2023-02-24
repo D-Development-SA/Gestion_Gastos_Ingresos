@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 
 public class AccessBDExcepcion extends CentralExcepcion {
     public AccessBDExcepcion() {
-        super("No se pudo realizar la consulta a la BD correctamente",
+        super("No se pudo realizar la operacion a la BD correctamente",
                 "BD-301",
                 "ErrorQuery",
                 "???",

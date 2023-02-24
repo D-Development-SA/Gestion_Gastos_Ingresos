@@ -21,9 +21,11 @@ import java.util.stream.Collectors;
 @Service
 public class UsuarioImplementacion extends GenericImplementacion<Usuario, IUsuarioDao> implements UserDetailsService, IUsuarioService {
     private Logger logger = LoggerFactory.getLogger(UsuarioImplementacion.class);
+    private static IUsuarioDao daoAux = null;
     @Autowired
     public UsuarioImplementacion(IUsuarioDao dao) {
         super(dao);
+        daoAux = dao;
     }
 
     @Override
@@ -46,7 +48,12 @@ public class UsuarioImplementacion extends GenericImplementacion<Usuario, IUsuar
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Usuario findUsuarioByNombreContaining(String Nombre) {
         return dao.findUsuarioByNombreContaining(Nombre);
+    }
+    @Transactional(readOnly = true)
+    public static Usuario obtenerUsuario(String nombre){
+        return daoAux.findUsuarioByNombreContaining(nombre);
     }
 }

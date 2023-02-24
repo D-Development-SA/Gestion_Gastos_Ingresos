@@ -20,7 +20,7 @@ public class GastoIngresoController {
     @Autowired
     private IGastoIngresoService gastoIngresoService;
 
-    @GetMapping
+    @GetMapping("/ver")
     public ResponseEntity<List<GastoIngreso>> findAllGastoIngreso(){
         List<GastoIngreso> gastoIngreso = gastoIngresoService.findAll();
         if (gastoIngreso.isEmpty()) throw new ListaEmptyExcepcion("GastoIngreso", "Busqueda de todos los GastoIngreso");

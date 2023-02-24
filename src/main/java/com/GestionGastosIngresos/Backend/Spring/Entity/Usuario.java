@@ -35,7 +35,7 @@ public class Usuario implements Serializable {
 
     private boolean enabled;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_authorities", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "rol_id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "rol_id"}))

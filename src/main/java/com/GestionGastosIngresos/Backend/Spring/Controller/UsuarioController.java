@@ -4,12 +4,14 @@ import com.GestionGastosIngresos.Backend.Spring.Controller.Excepcion.ArgumentExc
 import com.GestionGastosIngresos.Backend.Spring.Controller.Excepcion.ArgumentExcepcion.CamposVaciosExcepcion;
 import com.GestionGastosIngresos.Backend.Spring.Controller.Excepcion.BDExcepcion.NotExistExcepcion;
 import com.GestionGastosIngresos.Backend.Spring.Controller.Excepcion.GeneralExcepcionandControllerAdvide.ListaEmptyExcepcion;
+import com.GestionGastosIngresos.Backend.Spring.Entity.Rol;
 import com.GestionGastosIngresos.Backend.Spring.Entity.Usuario;
 import com.GestionGastosIngresos.Backend.Spring.Service.Contratos.IUsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -54,6 +56,10 @@ public class UsuarioController {
     @PostMapping("/crearUsuario")
     public ResponseEntity<Usuario> createUsuario(@RequestBody @Valid Usuario usuario){
         Usuario usuarioSalvado = usuarioService.save(usuario);
+
+        usuarioSalvado.getRoles().clear();
+        usuarioSalvado.getRoles().add(new Rol("ROLE_USER"));
+        usuarioSalvado.setContrasenna(new BCryptPasswordEncoder().encode(usuarioSalvado.getContrasenna()));
 
         return new ResponseEntity<>(usuarioSalvado, HttpStatus.CREATED);
     }

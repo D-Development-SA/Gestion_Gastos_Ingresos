@@ -14,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.util.Arrays;
 
 @Configuration
 @AllArgsConstructor
@@ -33,13 +32,13 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(HttpMethod.POST, "/api/usuarios/crearUsuario")
                 .permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/PDF/cargarPdf/**")
-                .permitAll()
                 .requestMatchers("/api/usuarios", "/api/personas")
                 .hasRole("ADMIN")
                 .requestMatchers("/api/usuarios/**", "/api/personas/**")
                 .hasRole("ADMIN")
                 .requestMatchers("/api/gastosIngresos/**", "/api/PDF/**")
+                .hasAnyRole("ADMIN", "USER")
+                .requestMatchers("/api/gastosIngresos")
                 .hasAnyRole("ADMIN", "USER")
                 .anyRequest()
                 .authenticated()
@@ -64,17 +63,5 @@ public class WebSecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
-    }
-
-    public static void main(String[] args) {
-        String [] nombre = {
-                "jas.pdf",
-                "jas.pdf.pdf",
-                "jas.pdfpdf",
-                "jas.pdfpdf",
-                "jas.fdp",
-                "jas.jpg"
-        };
-        Arrays.stream(nombre).forEach(s -> System.out.println(s.split("\\.", 2)[1].matches("pdf")));
     }
 }

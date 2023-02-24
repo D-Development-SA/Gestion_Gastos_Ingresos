@@ -1,7 +1,6 @@
 package com.GestionGastosIngresos.Backend.Spring.Security;
 
 import com.GestionGastosIngresos.Backend.Spring.Entity.Rol;
-import com.GestionGastosIngresos.Backend.Spring.Service.Contratos.IUsuarioService;
 import com.GestionGastosIngresos.Backend.Spring.Service.Implementaciones.UsuarioImplementacion;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -9,7 +8,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
